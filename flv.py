@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-from pathlib import Path
 
 
-def generate_flv():
+def generate_html():
     with open("template.html") as f:
         template = f.read()
     p = Path(".")
     swfs = list(p.glob("**/*.swf"))
-    htmls = {}
     for swf in swfs:
-        name = str(swf).rstrip(".swf")
-        tmp = template.replace("template", name)
-        htmls[name] = tmp
-    for name, content in htmls.items():
-        with open(name + ".html", "w") as f:
+        content = template.replace("template", swf.stem)
+        html = swf.with_suffix(".html")
+        with open(html, "w") as f:
             f.write(content)
 
 
+def remove_old_html():
+    p = Path(".")
+    for html in p.glob("**/*.html"):
+        html.unlink()
+
 if __name__ == "__main__":
-    generate_flv()
+    remove_old_html()
+    #generate_html()
