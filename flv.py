@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import click
 
 
+@click.command()
+@click.argument("--option")
 def generate_html():
     with open("template.html") as f:
         template = f.read()
@@ -12,7 +15,8 @@ def generate_html():
         html.write_text(content)
 
 
-def remove_old_html():
+@click.option("-c", "--clean", is_flag=True)
+def remove_old_html(clean):
     p = Path(".")
     for html in p.glob("**/*.html"):
         if html.name == "template.html":
