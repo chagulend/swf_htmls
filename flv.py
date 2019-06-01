@@ -10,14 +10,14 @@ import click
               help="Remove old html files")
 @click.option("-r", "--recursive", is_flag=True, help="Recursive")
 def generate_html(path, clean, recursive):
-    if clean:
-        remove_old_html(path, recursive)
-    with open("template.html") as f:
-        template = f.read()
     p = Path(path)
     files = p.glob("*.swf")
+    if clean:
+        remove_old_html(path, recursive)
     if recursive:
         files = p.glob("**/*.swf")
+    with open("template.html") as f:
+        template = f.read()
     for swf in files:
         content = template.replace("template", swf.stem)
         html = swf.with_suffix(".html")
