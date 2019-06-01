@@ -4,8 +4,11 @@ import click
 
 
 @click.command()
-@click.argument("--option")
-def generate_html():
+@click.option("--path", default=".")
+@click.option("-c", "--clean", is_flag=True)
+def generate_html(path, clean):
+    if (clean):
+        remove_old_html()
     with open("template.html") as f:
         template = f.read()
     p = Path(".")
@@ -15,8 +18,7 @@ def generate_html():
         html.write_text(content)
 
 
-@click.option("-c", "--clean", is_flag=True)
-def remove_old_html(clean):
+def remove_old_html():
     p = Path(".")
     for html in p.glob("**/*.html"):
         if html.name == "template.html":
@@ -25,5 +27,4 @@ def remove_old_html(clean):
 
 
 if __name__ == "__main__":
-    remove_old_html()
     generate_html()
